@@ -16,13 +16,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+
 public class JSONParser {
+    //JSON(JavaScript Object Notation, JS 对象标记) 是一种轻量级的数据交换格式。
+    //Parser 解析
     static InputStream sInputStream = null;
     static JSONObject sReturnJsonObject = null;
     static String sRawJsonString = "";
+    //BufferedReader是缓冲流, INputStream是字节流
     public JSONParser() {}
     public JSONObject getJSONFromUrl(String url) {
-//attempt to get response from server
+    //attempt to get response from server
         try {
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
@@ -36,10 +40,10 @@ public class JSONParser {
         } catch (IOException e) {
             e.printStackTrace();
         }
-//read stream into string-builder
+    //read stream into string-builder
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    sInputStream, "iso-8859-1"), 8);
+                    sInputStream, "iso-8859-1"), 8);//Buffered 缓冲区
             StringBuilder stringBuilder = new StringBuilder();
             String line = null;
             while ((line = reader.readLine()) != null) {
@@ -48,14 +52,14 @@ public class JSONParser {
             sInputStream.close();
             sRawJsonString = stringBuilder.toString();
         } catch (Exception e) {
-            Log.e("Error reading from Buffer: " + e.toString(), this.getClass().getSimpleName());
+            Log.e("Error read from Buffer:" + e.toString(), this.getClass().getSimpleName());
         }
         try {
             sReturnJsonObject = new JSONObject(sRawJsonString);
         } catch (JSONException e) {
             Log.e("Parser", "Error when parsing data " + e.toString());
         }
-//return json object
+    //return json object
         return sReturnJsonObject;
     }
 }

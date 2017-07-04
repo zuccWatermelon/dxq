@@ -3,7 +3,7 @@
     package="cn.zhangjia.zucc.mycurrencies">
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>//用于判断网络状态
 
 
     <application

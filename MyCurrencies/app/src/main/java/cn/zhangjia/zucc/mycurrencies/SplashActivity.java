@@ -13,7 +13,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-
 public class SplashActivity extends AppCompatActivity {
 
     //url to currency codes used in this application
@@ -27,14 +26,12 @@ public class SplashActivity extends AppCompatActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);
 
-//新增加的代码
         new FetchCodesTask().execute(URL_CODES);
 
     }
 
     private class FetchCodesTask extends AsyncTask<String, Void, JSONObject> {
-
-
+//异步
         @Override
         protected JSONObject doInBackground(String... params) {
             return new JSONParser().getJSONFromUrl(params[0]);
@@ -45,7 +42,7 @@ public class SplashActivity extends AppCompatActivity {
                 if (jsonObject == null) {
                     throw new JSONException("no data available.");
                 }
-                Iterator iterator = jsonObject.keys();
+                Iterator iterator = jsonObject.keys(); //迭代器，迭代程序;
                 String key = "";
                 mCurrencies = new ArrayList<String>();
                 while (iterator.hasNext()) {
@@ -59,7 +56,7 @@ public class SplashActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 Toast.makeText(
                         SplashActivity.this,
-                        "There's been a JSON exception: " + e.getMessage(),
+                        "There has been a JSON exception: " + e.getMessage(),
                         Toast.LENGTH_LONG
                 ).show();
                 e.printStackTrace();

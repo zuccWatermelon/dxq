@@ -19,6 +19,5 @@
         android:orderInCategory="300"
         android:title="exit"
         app:showAsAction="never"/>
-
 </menu>
 

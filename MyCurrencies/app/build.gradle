@@ -6,7 +6,7 @@ android {
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "cn.zhangjia.zucc.mycurrencies"
-        minSdkVersion 19
+        minSdkVersion 18
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
