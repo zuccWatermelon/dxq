@@ -86,7 +86,8 @@
     </LinearLayout>
 
     <LinearLayout
-        style="@style/layout_back">
+        style="@style/layout_back"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/txt_converted"
@@ -100,6 +101,14 @@
             android:gravity="center_vertical"
             android:textSize="30sp"
             android:typeface="normal"/>
+
+        <Button
+            android:id="@+id/historyButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Search History"
+            />
     </LinearLayout>
 </LinearLayout>
 
