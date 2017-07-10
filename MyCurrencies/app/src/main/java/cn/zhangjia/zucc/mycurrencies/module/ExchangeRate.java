@@ -1,14 +1,26 @@
 package cn.zhangjia.zucc.mycurrencies.module;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 /**
  * Created by Mia on 2017/7/9.
  */
 
 public class ExchangeRate {
+    private Date time;
     private int id;
     private String foreignName;
     private String homeName;
     private double rate;
+
+    public Date getTime(){
+        return time;
+    }
+
+    public void setTime(Date time){
+        this.time = time;
+    }
 
     public int getId() {
         return id;

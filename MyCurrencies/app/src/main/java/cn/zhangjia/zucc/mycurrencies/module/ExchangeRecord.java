@@ -1,15 +1,29 @@
 package cn.zhangjia.zucc.mycurrencies.module;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.concurrent.RecursiveTask;
+
 /**
  * Created by Mia on 2017/7/9.
  */
 
 public class ExchangeRecord {
+    private Date time;
     private int id;
     private String foreignName;
     private double foreignCurrency;
     private String homeName;
     private double homeCurrency;
+
+    public Date getTime(){
+        return time;
+    }
+
+    public void setTime(Date time){
+        this.time = time;
+    }
 
     public int getId() {
         return id;

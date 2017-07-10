@@ -22,10 +22,10 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS ExchangeRate" +
-                "(id INTEGER PRIMARY KEY AUTOINCREMENT, foreignName VARCHAR(10), homeName VARCHAR(10), rate REAL)");
+                "(id INTEGER PRIMARY KEY AUTOINCREMENT , foreignName VARCHAR(10), homeName VARCHAR(10), rate REAL , time VARCHAR(10))");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS ExchangeRecord" +
-                "(id INTEGER PRIMARY KEY AUTOINCREMENT, foreignName VARCHAR(10), foreignCurrency REAL, homeName VARCHAR(10), homeCurrency REAL)");
+                "(id INTEGER PRIMARY KEY AUTOINCREMENT, foreignName VARCHAR(10), foreignCurrency REAL, homeName VARCHAR(10), homeCurrency REAL,time VARCHAR(10))");
     }
 
     //如果DATABASE_VERSION值被改为2,系统发现现有数据库版本不同,即会调用onUpgrade

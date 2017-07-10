@@ -102,13 +102,14 @@
             android:textSize="30sp"
             android:typeface="normal"/>
 
-        <Button
+            <Button
             android:id="@+id/historyButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Search History"
             />
+
     </LinearLayout>
 </LinearLayout>
 

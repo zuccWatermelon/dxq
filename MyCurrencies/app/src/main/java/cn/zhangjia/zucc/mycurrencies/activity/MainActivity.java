@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -31,6 +32,7 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
         database = new DBManager(this);
@@ -134,21 +137,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         historyButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("查询记录");
-                String recordString = "";
-                List<ExchangeRecord> exchangeRecords = database.queryAllExchangeRecord();
-                for(ExchangeRecord exchangeRecord : exchangeRecords){
-                    recordString += exchangeRecord.getForeignName() + " " + exchangeRecord.getForeignCurrency() + " to " + exchangeRecord.getHomeName() + " " + exchangeRecord.getHomeCurrency() + "\n";
-                }
-                builder.setMessage(recordString);
-                builder.setPositiveButton("确认",new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog,int which){
-                        dialog.dismiss();
-                    }
-                });
-                builder.create().show();
+                Intent intent = new Intent(MainActivity.this,RecordActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -158,6 +148,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onDestroy();
         //应用的最后一个Activity关闭时应该释放DB
         database.closeDB();
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     @Override
@@ -232,12 +228,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         mConvertedTextView.setText("");
 
-    }
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 
     @Override
@@ -338,6 +328,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             exchangeRecord.setForeignCurrency(Double.parseDouble(strAmount));
             exchangeRecord.setHomeName(strHomCode);
             exchangeRecord.setHomeCurrency(dCalculated);
+            exchangeRecord.setTime(new Date());
             database.addExchangeRecord(exchangeRecord);
         }
     }
