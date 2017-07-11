@@ -9,12 +9,15 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -29,24 +32,34 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import cn.zhangjia.zucc.mycurrencies.database.DBManager;
+import cn.zhangjia.zucc.mycurrencies.module.ExchangeRate;
 import cn.zhangjia.zucc.mycurrencies.module.ExchangeRecord;
 import cn.zhangjia.zucc.mycurrencies.util.JSONParser;
 import cn.zhangjia.zucc.mycurrencies.util.PrefsMgr;
 import cn.zhangjia.zucc.mycurrencies.R;
+
+import static java.lang.System.exit;
+import static java.lang.System.in;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     //define members that correspond to Views in our layout
     //在布局中定义对视图做出反馈的成员
     private Button mCalcButton;
     private Button historyButton;
+    private Button rateButton;
     private TextView mConvertedTextView;
     private EditText mAmountEditText;
     private Spinner mForSpinner,mHomSpinner;
@@ -74,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-
+        requestTimer.schedule(requestTemperatureTask, 0, 5000);
         database = new DBManager(this);
         //unpack ArrayList from the bundle and convert to array
         //从一堆数据中解析出ArrayList，并且转换成数组
@@ -141,7 +154,50 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 startActivity(intent);
             }
         });
+
+        rateButton = (Button)findViewById(R.id.rateButton);
+        rateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,RateAcitivity.class);
+                startActivity(intent);
+            }
+        });
     }
+
+
+    Timer requestTimer = new Timer();
+    RequestHandler requestHandler = new RequestHandler(this);
+    TimerTask requestTemperatureTask = new TimerTask() {
+        @Override
+        public void run() {
+            Message message = new Message();
+            message.what = 1;
+            requestHandler.sendMessage(message);
+        }
+    };
+
+    class RequestHandler extends Handler{
+        WeakReference<MainActivity> mActivity;
+
+        RequestHandler(MainActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
+        String property = null;
+        @Override
+        public synchronized void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    property = "Currency";
+                    //每次调用前必须重新声明一次变量，因为execute一个异步对象只能运行一次
+                    CurrencyConverterTask2 currency = new CurrencyConverterTask2();
+                    currency.execute(URL_BASE+mKey);
+                    break;
+            }
+        }
+    }
+
 
     @Override
     protected void onDestroy(){
@@ -151,7 +207,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -263,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return  properties.getProperty(keyName);
 
     }
-    private class CurrencyConverterTask extends AsyncTask<String, Void, JSONObject> {
+    public class CurrencyConverterTask extends AsyncTask<String, Void, JSONObject> {
         private ProgressDialog progressDialog;
         @Override
         protected void onPreExecute() {
@@ -332,5 +387,38 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             database.addExchangeRecord(exchangeRecord);
         }
     }
+    public class CurrencyConverterTask2 extends AsyncTask<String, Void, JSONObject> {
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            return new JSONParser().getJSONFromUrl(params[0]);
+        }
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            try {
+                if (jsonObject == null){
+                    throw new JSONException("no data available.");
+                }
+                JSONObject jsonRates = jsonObject.getJSONObject(RATES);
+                double rate = jsonRates.getDouble("CNY");
+                System.out.println("THE RATE IS " + rate + "!!!PLEASE PAY ATTENTION TO HERE!!!");
 
+                ExchangeRate exchangeRate = new ExchangeRate();
+                exchangeRate.setForeignName("USD");
+                exchangeRate.setHomeName("CNY");
+                exchangeRate.setTime(new Date());
+                exchangeRate.setRate(rate);
+                database.addExchangeRate(exchangeRate);
+
+            } catch (JSONException e) {
+                Toast.makeText(
+                        MainActivity.this,
+                        "There's been a JSON exception: " + e.getMessage(),
+                        Toast.LENGTH_LONG
+                ).show();
+                mConvertedTextView.setText("");
+                e.printStackTrace();
+            }
+
+        }
+    }
 }

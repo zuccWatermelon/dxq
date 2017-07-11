@@ -22,6 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.RecordActivity"></activity>
+        <activity android:name=".activity.RateAcitivity"></activity>
     </application>
 
 </manifest>

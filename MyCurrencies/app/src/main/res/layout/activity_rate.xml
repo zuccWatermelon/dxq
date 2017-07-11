@@ -18,18 +18,6 @@
             android:textColor="@color/black"
             android:textSize="20sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/selectedDate"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="点击我查询"
-                android:textSize="32sp"/>
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,15 +37,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="外币数量"
-                android:textColor="@color/black" />
-
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
                 android:text="本地币种"
                 android:textColor="@color/black" />
 
@@ -67,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:gravity="center"
-                android:text="本地币种数量"
+                android:text="汇率"
                 android:textColor="@color/black" />
 
         </LinearLayout>
@@ -78,17 +57,17 @@
             android:layout_height="fill_parent"
             android:scrollbars="vertical"
             android:fadingEdge="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/pink">
-
-            <TextView
-                android:id="@+id/historyText"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black" />
-        </LinearLayout>
+                android:background="@color/pink">
+
+                <TextView
+                    android:id="@+id/rateText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black" />
+            </LinearLayout>
         </ScrollView>
     </LinearLayout>
 </LinearLayout>

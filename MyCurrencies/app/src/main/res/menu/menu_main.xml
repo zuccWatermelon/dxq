@@ -6,7 +6,7 @@
     <item
         android:id="@+id/mnu_codes"
         android:orderInCategory="100"
-        android:title="search active codes"
+        android:title="search active codes 可转换币种"
         app:showAsAction="never"/>
     <item
         android:id="@+id/mnu_invert"

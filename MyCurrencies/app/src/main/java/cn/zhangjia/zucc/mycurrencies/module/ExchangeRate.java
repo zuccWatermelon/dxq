@@ -1,6 +1,5 @@
 package cn.zhangjia.zucc.mycurrencies.module;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**

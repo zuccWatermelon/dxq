@@ -15,6 +15,7 @@ import java.util.List;
 
 import cn.zhangjia.zucc.mycurrencies.module.ExchangeRate;
 import cn.zhangjia.zucc.mycurrencies.module.ExchangeRecord;
+import cn.zhangjia.zucc.mycurrencies.util.DateUtil;
 
 /**
  * Created by Mia on 2017/7/9.
@@ -34,7 +35,7 @@ public class DBManager {
     public void addExchangeRate(ExchangeRate exchangeRate) {
         db.beginTransaction();  //开始事务
         try {
-            db.execSQL("INSERT INTO ExchangeRate VALUES(null, ?, ?, ? , ?)", new Object[]{exchangeRate.getForeignName(), exchangeRate.getHomeName(), exchangeRate.getRate(),exchangeRate.getTime()});
+            db.execSQL("INSERT INTO ExchangeRate VALUES(null, ?, ?, ? , ?)", new Object[]{exchangeRate.getForeignName(), exchangeRate.getHomeName(), exchangeRate.getRate(), exchangeRate.getTime()});
             db.setTransactionSuccessful();  //设置事务成功完成
         } finally {
             db.endTransaction();    //结束事务
@@ -44,19 +45,11 @@ public class DBManager {
     public void addExchangeRecord(ExchangeRecord exchangeRecord) {
         db.beginTransaction();  //开始事务
         try {
-            db.execSQL("INSERT INTO ExchangeRecord VALUES(null, ?, ?, ?, ?,?)", new Object[]{exchangeRecord.getForeignName(), exchangeRecord.getForeignCurrency(), exchangeRecord.getHomeName(), exchangeRecord.getHomeCurrency(),exchangeRecord.getTime()});
+            db.execSQL("INSERT INTO ExchangeRecord VALUES(null, ?, ?, ?, ?, ?)", new Object[]{exchangeRecord.getForeignName(), exchangeRecord.getForeignCurrency(), exchangeRecord.getHomeName(), exchangeRecord.getHomeCurrency(), DateUtil.dateToString(exchangeRecord.getTime(), "yyyy-MM-dd")});
             db.setTransactionSuccessful();  //设置事务成功完成
         } finally {
             db.endTransaction();    //结束事务
         }
-    }
-
-    public static Date stringToDate(String strTime, String formatType)
-            throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat(formatType);
-        Date date = null;
-        date = formatter.parse(strTime);
-        return date;
     }
 
     public List<ExchangeRecord> queryAllExchangeRecord() throws ParseException {
@@ -69,13 +62,27 @@ public class DBManager {
             exchangeRecord.setForeignCurrency(cursor.getDouble(2));
             exchangeRecord.setHomeName(cursor.getString(3));
             exchangeRecord.setHomeCurrency(cursor.getDouble(4));
-            Log.e("TAG",cursor.getString(5));
-            exchangeRecord.setTime(stringToDate(cursor.getString(5),"yyyy-MM-dd-hh-mm-ss"));
-
+            exchangeRecord.setTime(DateUtil.stringToDate(cursor.getString(5), "yyyy-MM-dd"));
             exchangeRecords.add(exchangeRecord);
         }
         cursor.close();
         return exchangeRecords;
+    }
+
+    public List<ExchangeRate> queryAllExchangeRate() throws ParseException {
+        Cursor cursor = db.rawQuery("SELECT * FROM ExchangeRate", null);
+        List<ExchangeRate> exchangeRates = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            ExchangeRate exchangeRate = new ExchangeRate();
+            exchangeRate.setId(cursor.getInt(0));
+            exchangeRate.setForeignName(cursor.getString(1));
+            exchangeRate.setHomeName(cursor.getString(2));
+            exchangeRate.setRate(cursor.getDouble(3));
+            exchangeRate.setTime(DateUtil.stringToDate(cursor.getString(4), "yyyy-MM-dd"));
+            exchangeRates.add(exchangeRate);
+        }
+        cursor.close();
+        return exchangeRates;
     }
 
     /**

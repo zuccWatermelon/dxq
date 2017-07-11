@@ -9,4 +9,6 @@
 <color name="grey_light">#AAA</color>
 <color name="turquoise">#ff22e9ff</color>
 <color name="flat_blue">#ff1a51f4</color>
+    <color name="blue">#0af</color>
+<color name="pink">#f0f</color>
 </resources>
