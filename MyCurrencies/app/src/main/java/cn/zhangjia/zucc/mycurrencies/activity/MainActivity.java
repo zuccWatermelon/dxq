@@ -58,8 +58,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     //define members that correspond to Views in our layout
     //在布局中定义对视图做出反馈的成员
     private Button mCalcButton;
-    private Button historyButton;
-    private Button rateButton;
     private TextView mConvertedTextView;
     private EditText mAmountEditText;
     private Spinner mForSpinner,mHomSpinner;
@@ -87,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-        requestTimer.schedule(requestTemperatureTask, 0, 5000);
+        requestTimer.schedule(requestTimerTask, 0, 3600000);
         database = new DBManager(this);
         //unpack ArrayList from the bundle and convert to array
         //从一堆数据中解析出ArrayList，并且转换成数组
@@ -146,29 +144,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
         mKey = getKey("open_key");
 
-        historyButton = (Button)findViewById(R.id.historyButton);
-        historyButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(MainActivity.this,RecordActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        rateButton = (Button)findViewById(R.id.rateButton);
-        rateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,RateAcitivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
 
     Timer requestTimer = new Timer();
     RequestHandler requestHandler = new RequestHandler(this);
-    TimerTask requestTemperatureTask = new TimerTask() {
+    TimerTask requestTimerTask = new TimerTask() {
         @Override
         public void run() {
             Message message = new Message();
@@ -222,6 +203,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             case R.id.mnu_codes:
                 //TODO define behavior here
                 launchBrowser(SplashActivity.URL_CODES);
+                break;
+            case R.id.mnu_rate:
+                Intent intent = new Intent(MainActivity.this,RateAcitivity.class);
+                startActivity(intent);
+                break;
+            case R.id.mnu_history:
+                Intent intent1 = new Intent(MainActivity.this,RecordActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.mnu_exit:
                 finish();
@@ -398,9 +387,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 if (jsonObject == null){
                     throw new JSONException("no data available.");
                 }
+
+
                 JSONObject jsonRates = jsonObject.getJSONObject(RATES);
+
                 double rate = jsonRates.getDouble("CNY");
-                System.out.println("THE RATE IS " + rate + "!!!PLEASE PAY ATTENTION TO HERE!!!");
 
                 ExchangeRate exchangeRate = new ExchangeRate();
                 exchangeRate.setForeignName("USD");

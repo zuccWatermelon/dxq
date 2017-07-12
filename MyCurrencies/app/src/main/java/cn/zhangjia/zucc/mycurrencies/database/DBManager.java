@@ -35,7 +35,7 @@ public class DBManager {
     public void addExchangeRate(ExchangeRate exchangeRate) {
         db.beginTransaction();  //开始事务
         try {
-            db.execSQL("INSERT INTO ExchangeRate VALUES(null, ?, ?, ? , ?)", new Object[]{exchangeRate.getForeignName(), exchangeRate.getHomeName(), exchangeRate.getRate(), exchangeRate.getTime()});
+            db.execSQL("INSERT INTO ExchangeRate VALUES(null, ?, ?, ? , ?)", new Object[]{exchangeRate.getForeignName(), exchangeRate.getHomeName(), exchangeRate.getRate(), DateUtil.dateToString(exchangeRate.getTime(), "yyyy-MM-dd")});
             db.setTransactionSuccessful();  //设置事务成功完成
         } finally {
             db.endTransaction();    //结束事务

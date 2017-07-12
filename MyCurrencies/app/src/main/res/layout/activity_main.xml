@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
+        android:layout_height="1dp"
         android:layout_weight="20"
         android:orientation="vertical">
 
@@ -58,8 +58,8 @@
         android:layout_marginRight="10dp"
         android:layout_weight="10"
         android:text="Calculate"
-        android:textColor="@color/white"
-        android:background="@drawable/button_selector"/>
+        android:textColor="@color/black"
+        android:background="@color/white"/>
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -102,20 +102,8 @@
             android:textSize="30sp"
             android:typeface="normal"/>
 
-            <Button
-            android:id="@+id/historyButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Search History"
-            />
-            <Button
-            android:id="@+id/rateButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Rate"
-            />
+
     </LinearLayout>
+
 </LinearLayout>
 

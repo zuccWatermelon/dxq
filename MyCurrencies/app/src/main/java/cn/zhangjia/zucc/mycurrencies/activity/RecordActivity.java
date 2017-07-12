@@ -42,7 +42,7 @@ public class RecordActivity extends Activity {
             exchangeRecords = database.queryAllExchangeRecord();
             String recordString = "";
             for (ExchangeRecord exchangeRecord : exchangeRecords) {
-                recordString += "      " + exchangeRecord.getForeignName() + "        " + exchangeRecord.getForeignCurrency() + "       " + exchangeRecord.getHomeName() + "          " + exchangeRecord.getHomeCurrency() + "\n";
+                recordString += "      " + exchangeRecord.getForeignName() + "           " + exchangeRecord.getForeignCurrency() + "            " + exchangeRecord.getHomeName() + "        " + exchangeRecord.getHomeCurrency() + "       "+ DateUtil.dateToString(exchangeRecord.getTime(),"yy/MM/dd/hh")+ "\n"+"\n";
             }
             textView.setText(recordString);
         } catch (ParseException e) {

@@ -6,18 +6,29 @@
     <item
         android:id="@+id/mnu_codes"
         android:orderInCategory="100"
-        android:title="search active codes 可转换币种"
+        android:title="可转换币种"
         app:showAsAction="never"/>
     <item
         android:id="@+id/mnu_invert"
         android:orderInCategory="200"
-        android:title="invert codes 汇率互换"
+        android:title="汇率互换"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/mnu_rate"
+        android:orderInCategory="200"
+        android:title="查看汇率"
         app:showAsAction="never"/>
 
     <item
+        android:id="@+id/mnu_history"
+        android:orderInCategory="300"
+        android:title="查询历史"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/mnu_exit"
         android:orderInCategory="300"
-        android:title="exit 注销"
+        android:title="注销"
         app:showAsAction="never"/>
+
 </menu>
 

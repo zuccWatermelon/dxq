@@ -8,6 +8,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -32,13 +33,12 @@ public class RateAcitivity extends Activity {
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_rate);
         database = new DBManager(this);
-
         final TextView textView = findViewById(R.id.rateText);
         try {
             exchangeRates = database.queryAllExchangeRate();
             String rateString = "";
             for (ExchangeRate exchangeRate : exchangeRates) {
-                rateString += "      " + exchangeRate.getForeignName() + "        " + exchangeRate.getTime() + "\t" + exchangeRate.getRate() + "       " + exchangeRate.getHomeName() + "\n";
+                rateString +=  "                  " + exchangeRate.getRate() + "                                      "  + DateUtil.dateToString(exchangeRate.getTime(),"yy-MM-dd-hh") + "\n"+ "\n";
             }
             textView.setText(rateString);
         } catch (ParseException e) {

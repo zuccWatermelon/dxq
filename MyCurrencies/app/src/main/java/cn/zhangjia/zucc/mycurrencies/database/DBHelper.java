@@ -31,6 +31,8 @@ public class DBHelper extends SQLiteOpenHelper {
     //如果DATABASE_VERSION值被改为2,系统发现现有数据库版本不同,即会调用onUpgrade
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("drop table if exists ExchangeRate");
+        db.execSQL("drop table if exists ExchangeRecord");
+        onCreate(db);
     }
 }
