@@ -3,18 +3,13 @@ package cn.zhangjia.zucc.mycurrencies.database;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import cn.zhangjia.zucc.mycurrencies.module.ExchangeRate;
-import cn.zhangjia.zucc.mycurrencies.module.ExchangeRecord;
+import cn.zhangjia.zucc.mycurrencies.model.ExchangeRate;
+import cn.zhangjia.zucc.mycurrencies.model.ExchangeRecord;
 import cn.zhangjia.zucc.mycurrencies.util.DateUtil;
 
 /**

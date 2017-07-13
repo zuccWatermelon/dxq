@@ -11,13 +11,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,26 +31,20 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Currency;
 import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import cn.zhangjia.zucc.mycurrencies.database.DBManager;
-import cn.zhangjia.zucc.mycurrencies.module.ExchangeRate;
-import cn.zhangjia.zucc.mycurrencies.module.ExchangeRecord;
+import cn.zhangjia.zucc.mycurrencies.model.ExchangeRate;
+import cn.zhangjia.zucc.mycurrencies.model.ExchangeRecord;
 import cn.zhangjia.zucc.mycurrencies.util.JSONParser;
 import cn.zhangjia.zucc.mycurrencies.util.PrefsMgr;
 import cn.zhangjia.zucc.mycurrencies.R;
-
-import static java.lang.System.exit;
-import static java.lang.System.in;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     //define members that correspond to Views in our layout

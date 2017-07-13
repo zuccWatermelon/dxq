@@ -1,49 +1,78 @@
 package cn.zhangjia.zucc.mycurrencies.activity;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.DatePicker;
 import android.widget.TextView;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.zhangjia.zucc.mycurrencies.R;
 import cn.zhangjia.zucc.mycurrencies.database.DBManager;
-import cn.zhangjia.zucc.mycurrencies.module.ExchangeRate;
-import cn.zhangjia.zucc.mycurrencies.module.ExchangeRecord;
+import cn.zhangjia.zucc.mycurrencies.model.ExchangeRate;
 import cn.zhangjia.zucc.mycurrencies.util.DateUtil;
+import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.AxisValue;
+import lecho.lib.hellocharts.model.Line;
+import lecho.lib.hellocharts.model.LineChartData;
+import lecho.lib.hellocharts.model.PointValue;
+import lecho.lib.hellocharts.view.LineChartView;
 
 /**
  * Created by Mia on 2017/7/11.
  */
 
 public class RateAcitivity extends Activity {
-    private DBManager database;
-
-    private List<ExchangeRate> exchangeRates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_rate);
-        database = new DBManager(this);
-        final TextView textView = findViewById(R.id.rateText);
+        DBManager database = new DBManager(this);
         try {
-            exchangeRates = database.queryAllExchangeRate();
-            String rateString = "";
-            for (ExchangeRate exchangeRate : exchangeRates) {
-                rateString +=  "                  " + exchangeRate.getRate() + "                                      "  + DateUtil.dateToString(exchangeRate.getTime(),"yy-MM-dd-hh") + "\n"+ "\n";
+            LineChartView rateDayView = findViewById(R.id.chart);
+            List<Line> rateLineList = new ArrayList<>();
+            List<PointValue> rateValueList = new ArrayList<>();
+            List<AxisValue> rateAxisValueList = new ArrayList<>();
+            Line rateLine = new Line(rateValueList).setCubic(true).setHasLabels(true).setHasLines(true).setHasPoints(false);
+
+
+            List<ExchangeRate> exchangeRates = database.queryAllExchangeRate();
+            for (int i = 0; i < exchangeRates.size(); i++) {
+                rateValueList.add(new PointValue(i, (float) exchangeRates.get(i).getRate()));
+                rateAxisValueList.add(new AxisValue(i).setLabel(DateUtil.dateToString(exchangeRates.get(i).getTime(),"yyyy-MM-dd")));
             }
-            textView.setText(rateString);
+
+            rateLineList.add(rateLine);
+
+            LineChartData rateData = new LineChartData();
+
+            Axis axisX = new Axis();
+            axisX.setHasLines(true);
+            axisX.setHasTiltedLabels(true);
+            axisX.setTextColor(Color.BLACK);
+            axisX.setName("Time");
+            axisX.setMaxLabelChars(6);
+            axisX.setValues(rateAxisValueList);
+            rateData.setAxisXBottom(axisX);
+
+            Axis axisY = new Axis();
+            axisY.setHasLines(true);
+            axisY.setHasTiltedLabels(true);
+            axisY.setTextColor(Color.BLACK);
+            axisY.setName("Rate");
+            axisY.setMaxLabelChars(6);
+            rateData.setAxisYLeft(axisY);
+
+            rateData.setLines(rateLineList);
+
+            rateDayView.setLineChartData(rateData);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
     }
+
 }

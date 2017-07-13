@@ -3,13 +3,8 @@ package cn.zhangjia.zucc.mycurrencies.activity;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -18,7 +13,7 @@ import java.util.List;
 
 import cn.zhangjia.zucc.mycurrencies.R;
 import cn.zhangjia.zucc.mycurrencies.database.DBManager;
-import cn.zhangjia.zucc.mycurrencies.module.ExchangeRecord;
+import cn.zhangjia.zucc.mycurrencies.model.ExchangeRecord;
 import cn.zhangjia.zucc.mycurrencies.util.DateUtil;
 
 /**
@@ -36,13 +31,12 @@ public class RecordActivity extends Activity {
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_record);
         database = new DBManager(this);
-
         final TextView textView = findViewById(R.id.historyText);
         try {
             exchangeRecords = database.queryAllExchangeRecord();
             String recordString = "";
             for (ExchangeRecord exchangeRecord : exchangeRecords) {
-                recordString += "      " + exchangeRecord.getForeignName() + "           " + exchangeRecord.getForeignCurrency() + "            " + exchangeRecord.getHomeName() + "        " + exchangeRecord.getHomeCurrency() + "       "+ DateUtil.dateToString(exchangeRecord.getTime(),"yy/MM/dd/hh")+ "\n"+"\n";
+                recordString += "    " + exchangeRecord.getForeignName() + "        " + String .format("%.2f",exchangeRecord.getForeignCurrency()) + "           " + exchangeRecord.getHomeName() + "        " + String .format("%.2f",exchangeRecord.getHomeCurrency()) + "     "+ DateUtil.dateToString(exchangeRecord.getTime(),"yy/MM/dd")+ "\n"+"\n";
             }
             textView.setText(recordString);
         } catch (ParseException e) {
@@ -65,7 +59,7 @@ public class RecordActivity extends Activity {
                             String recordString = "";
                             for (ExchangeRecord exchangeRecord : exchangeRecords) {
                                 if (exchangeRecord.getTime().compareTo(date) <= 0)
-                                    recordString += exchangeRecord.getForeignName() + "\t" + exchangeRecord.getForeignCurrency() + "\t" + exchangeRecord.getHomeName() + "\t" + exchangeRecord.getHomeCurrency() + "\n";
+                                    recordString += "    " + exchangeRecord.getForeignName() + "        " + String .format("%.2f",exchangeRecord.getForeignCurrency()) + "           " + exchangeRecord.getHomeName() + "        " + String .format("%.2f",exchangeRecord.getHomeCurrency()) + "     "+ DateUtil.dateToString(exchangeRecord.getTime(),"yy/MM/dd")+ "\n"+"\n";
                             }
                             textView.setText(recordString);
                         } catch (ParseException e) {
